@@ -99,8 +99,6 @@
   .r-item b{color:var(--ink);font-size:16px;margin-left:6px}
   .r-tier{margin-left:auto;font-family:var(--mono);font-size:12px;color:var(--gold)}
 
-  .next-p{max-width:62ch;margin-bottom:12px}
-  .next-fine{font-size:12.5px;margin-top:4px}
   footer{margin-top:34px;border-top:1px solid var(--edge);padding:22px 0 40px;color:var(--soft);font-size:13.5px}
   footer .privacy{font-family:var(--mono);font-size:11.5px;color:var(--faint);letter-spacing:.03em;margin-bottom:12px}
   footer p{margin-bottom:8px;max-width:62ch}
@@ -164,6 +162,7 @@
       <div class="lite">Indicative reading. The full Standard adds posture, scope-change history, and authority-matrix triggers to tier assignment.</div>
     </div>
     <div class="actions">
+      <button class="btn" id="sendBtn">Send me my results</button>
       <button class="btn" id="copyBtn">Copy results</button>
       <button class="btn ghost" id="resetBtn">Reset scorecard</button>
     </div>
@@ -175,17 +174,17 @@
     <div class="part"><b>Next</b> · What the number is for</div>
     <h2>One reading is a snapshot. The Standard runs on the trend.</h2>
     <p class="sub" id="nextNote">Score again in two weeks. If it moved, you'll want the record of why.</p>
-    <p class="next-p">If you run more than one engagement, FEOS keeps this scorecard, the governance register and the renewal clock for all of them, encrypted, on your own machine. <a href="https://operationsprotocol.com">See FEOS →</a></p>
-    <p class="next-p">If the score is wrong, or right in a way that stings, tell me. Paste your copied results if you want a second read. <a href="mailto:raine@operationsprotocol.com?subject=Scorecard">raine@operationsprotocol.com</a></p>
-    <p class="sub next-fine">These are ordinary links. Following one sends nothing you entered here.</p>
+    <p style="margin-bottom:10px;max-width:62ch">This is a self-assessment, scored from memory. At renewal time the same instruments can be computed from your actual engagement record instead — and turned into the artifact that justifies your fee to the client who's about to decide on it.</p>
+    <p style="margin-bottom:10px;max-width:62ch">That version isn't public yet. If you want a read on the scores you just produced, send them to me and I'll reply myself: <a href="mailto:raine@operationsprotocol.com?subject=My%20FOS%20scorecard">raine@operationsprotocol.com</a></p>
+    <p class="sub" style="font-size:12.5px">These are ordinary links. Following one sends nothing you entered here.</p>
   </div>
 </section>
 
 <footer>
   <div class="wrap">
     <div class="privacy">NOTHING ENTERED HERE LEAVES THIS PAGE · NO STORAGE · NO NETWORK · NO ANALYTICS</div>
-    <p>This scorecard implements the health and governance instruments of <a href="/fos-v1.0.pdf">The Fractional Operating Standard</a> (FOS v1.0) — the free, published doctrine for running a fractional practice: the full audit anchors, the four-tier response rules, the renewal clock, and the value ledger.</p>
-    <p>A full reference implementation conforming to FOS v1.0 is maintained as <a href="https://operationsprotocol.com">FEOS — the Fractional Executive Operating System</a>.</p>
+    <p>This scorecard implements the health and governance instruments of <a href="fos-v1.0.pdf">The Fractional Operating Standard</a> (FOS v1.0) — the free, published doctrine for running a fractional practice: the full audit anchors, the four-tier response rules, the renewal clock, and the value ledger.</p>
+    <p>A full reference implementation conforming to FOS v1.0 is maintained as FEOS, the Fractional Executive Operating System.</p>
     <p style="color:var(--faint);font-size:12px;margin-top:14px">FOS v1.0 · © 2026 Raine Townsend · Free to share unmodified, with attribution.</p>
   </div>
 </footer>
@@ -227,12 +226,6 @@ var TIERS={
  3:{name:"SPONSOR INTERVENTION REQUIRED",note:"The sponsor, by name, in a scheduled conversation — with the register on the table."},
  4:{name:"ENGAGEMENT AT RISK",note:"Pause the roadmap for a documented resolve-or-restructure conversation."}
 };
-var NEXT={
- 1:"Score again in two weeks. If it moved, you'll want the record of why.",
- 2:"Friction is where the record starts. Log what you marked today, with dates, while you still remember them.",
- 3:"This is the conversation the Standard exists to force. Don't have it from memory. Have it from the register.",
- 4:"This is the conversation the Standard exists to force. Don't have it from memory. Have it from the register."
-};
 var scores={}, active=INDS.map(function(){return false;});
 var TOTAL_W=7.2;
 
@@ -268,8 +261,12 @@ function compute(){
   el("stamp").lastElementChild.textContent=TIERS[tier].name;
   el("stamp").style.borderColor = tier>=4?"var(--severe)": tier===3?"var(--risk)": tier===2?"var(--caution)":"var(--gold)";
   el("tierNote").textContent=TIERS[tier].note;
+  el("nextNote").textContent = tier>=3
+    ? "This is the conversation the Standard exists to force. Don't have it from memory. Have it from the register."
+    : tier===2
+    ? "Friction is cheap to record now and expensive to reconstruct later. Log what you marked, with dates."
+    : "Score again in two weeks. If it moved, you'll want the record of why.";
   el("rTier").textContent="TIER "+tier+" · "+TIERS[tier].name;
-  el("nextNote").textContent=NEXT[tier];
   window.__state={hc:hc,gs:gs,tier:tier};
 }
 // build Part A
@@ -303,17 +300,25 @@ var indsBox=el("inds"), groups={3:"Structural Authority",2:"Visibility & Contrac
   });
 });
 // actions
-el("copyBtn").addEventListener("click",function(){
+function resultsText(){
   var s=window.__state||{}, names=INDS.filter(function(_,i){return active[i];}).map(function(x){return x.name;});
-  var txt="FOS FIELD SCORECARD — "+new Date().toISOString().slice(0,10)+"\n"+
+  return "FOS FIELD SCORECARD — "+new Date().toISOString().slice(0,10)+"\n"+
     "Health Composite (M1): "+(s.hc==null?"not fully scored":s.hc+"/100")+"\n"+
     "Governance Score (M17): "+s.gs+"/100\n"+
     "Governance tier (indicative): Tier "+s.tier+" — "+TIERS[s.tier].name+"\n"+
     "Active indicators: "+(names.length?names.join("; "):"none")+"\n"+
     "Scored under The Fractional Operating Standard v1.0 — fractionaloperatingstandard.com";
+}
+el("copyBtn").addEventListener("click",function(){
+  var txt=resultsText();
   (navigator.clipboard&&navigator.clipboard.writeText?navigator.clipboard.writeText(txt):Promise.reject()).then(function(){
     el("copyBtn").textContent="Copied"; setTimeout(function(){el("copyBtn").textContent="Copy results";},1600);
   }).catch(function(){ window.prompt("Copy your results:",txt); });
+});
+el("sendBtn").addEventListener("click",function(){
+  var body="Here are my scores. Anything you'd look at first?\n\n"+resultsText()+"\n\n";
+  window.location.href="mailto:raine@operationsprotocol.com?subject="+
+    encodeURIComponent("My FOS scorecard")+"&body="+encodeURIComponent(body);
 });
 el("resetBtn").addEventListener("click",function(){
   scores={}; active=INDS.map(function(){return false;});
