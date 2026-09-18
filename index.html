@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FOS Field Scorecard — The Fractional Operating Standard</title>
+<meta name="description" content="Score one engagement against The Fractional Operating Standard: six health dimensions, ten governance indicators, one verdict. Free. Nothing leaves this page.">
+<style>
+  :root{
+    --bg:#0e1114; --panel:#151a1f; --panel-2:#11151a; --edge:#262d35; --edge-soft:#1d232a;
+    --ink:#e9e4d8; --soft:#98a0a8; --faint:#6b7280;
+    --gold:#d2a12a; --gold-deep:#a97b12; --gold-dim:#8a6a1f;
+    --ok:#5f9e72; --caution:#d2a12a; --risk:#cf7a33; --severe:#c65550;
+    --serif:"Iowan Old Style",Charter,"Source Serif Pro",Georgia,serif;
+    --mono:"SF Mono","Cascadia Code",Menlo,Consolas,monospace;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{-webkit-text-size-adjust:100%}
+  body{background:var(--bg);color:var(--ink);font-family:var(--serif);font-size:16px;line-height:1.55;padding-bottom:74px}
+  .wrap{max-width:768px;margin:0 auto;padding:0 20px}
+  a{color:var(--gold);text-decoration:none;border-bottom:1px solid var(--gold-dim)}
+  a:hover{border-bottom-color:var(--gold)}
+  :focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+
+  /* ── header ── */
+  header{padding:44px 0 26px;border-bottom:1px solid var(--edge)}
+  .eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.22em;color:var(--gold);text-transform:uppercase}
+  h1{font-size:clamp(28px,6vw,40px);line-height:1.12;font-weight:700;margin:10px 0 12px;letter-spacing:-.01em}
+  .lede{color:var(--soft);font-size:16.5px;max-width:58ch}
+  .lede b{color:var(--ink);font-weight:600}
+
+  section{padding:30px 0 8px}
+  .part{font-family:var(--mono);font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--soft)}
+  .part b{color:var(--gold);font-weight:600}
+  h2{font-size:21px;margin:6px 0 4px}
+  .sub{color:var(--soft);font-size:14.5px;margin-bottom:16px;max-width:60ch}
+
+  /* ── dimension rows ── */
+  .dim{background:var(--panel);border:1px solid var(--edge-soft);border-radius:8px;padding:14px 16px 15px;margin-bottom:10px}
+  .dim-top{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+  .dim-name{font-size:16.5px;font-weight:600}
+  .wchip{font-family:var(--mono);font-size:11px;color:var(--gold);border:1px solid var(--gold-dim);border-radius:3px;padding:1px 6px;white-space:nowrap}
+  .dim-what{color:var(--soft);font-size:13.5px;margin:3px 0 10px}
+  .seg{display:grid;grid-template-columns:repeat(11,1fr);gap:4px}
+  .seg button{font-family:var(--mono);font-size:12.5px;padding:7px 0;background:var(--panel-2);color:var(--soft);
+    border:1px solid var(--edge-soft);border-radius:4px;cursor:pointer}
+  .seg button:hover{border-color:var(--gold-dim);color:var(--ink)}
+  .seg button[aria-pressed="true"]{background:var(--gold);border-color:var(--gold);color:#14110a;font-weight:700}
+
+  /* ── indicator rows ── */
+  .grp{margin:18px 0 6px;display:flex;align-items:baseline;gap:10px}
+  .grp h3{font-size:15px;letter-spacing:.02em}
+  .grp .wchip{color:var(--ink);border-color:var(--edge)}
+  .grp.x3 .wchip{color:var(--severe);border-color:#5c3230}
+  .grp.x2 .wchip{color:var(--risk);border-color:#5a4026}
+  .grp p{color:var(--soft);font-size:12.5px}
+  .ind{width:100%;text-align:left;display:flex;gap:12px;align-items:flex-start;background:var(--panel);
+    border:1px solid var(--edge-soft);border-radius:8px;padding:12px 14px;margin-bottom:8px;cursor:pointer;color:var(--ink);font-family:var(--serif)}
+  .ind:hover{border-color:var(--gold-dim)}
+  .box{flex:0 0 18px;height:18px;margin-top:3px;border:1.5px solid var(--soft);border-radius:3px;position:relative}
+  .ind[aria-pressed="true"]{border-color:var(--gold-deep);background:#1a1710}
+  .ind[aria-pressed="true"] .box{border-color:var(--gold);background:var(--gold)}
+  .ind[aria-pressed="true"] .box::after{content:"";position:absolute;inset:3px 4px 4px 3px;border:solid #14110a;border-width:0 2.5px 2.5px 0;transform:rotate(40deg) translate(-1px,-2px)}
+  .ind-name{font-weight:600;font-size:15.5px}
+  .ind-desc{color:var(--soft);font-size:13.5px;line-height:1.45;margin-top:2px}
+
+  /* ── verdict instrument ── */
+  .instrument{background:var(--panel);border:1px solid var(--edge);border-radius:10px;padding:22px 20px 20px;margin-top:8px}
+  .gauge{margin-bottom:22px}
+  .g-head{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px}
+  .g-name{font-size:15px;font-weight:600}
+  .g-code{font-family:var(--mono);font-size:11px;color:var(--faint);margin-left:8px}
+  .g-val{font-family:var(--mono);font-size:26px;font-weight:600}
+  .g-val small{font-size:13px;color:var(--faint);font-weight:400}
+  .track{position:relative;height:12px;background:var(--panel-2);border:1px solid var(--edge-soft);border-radius:6px}
+  .fill{position:absolute;left:0;top:0;bottom:0;border-radius:6px 0 0 6px;background:var(--gold);transition:width .35s ease, background-color .35s ease}
+  .tick{position:absolute;top:-5px;bottom:-5px;width:1px;background:var(--edge)}
+  .tick span{position:absolute;top:100%;left:-8px;font-family:var(--mono);font-size:9.5px;color:var(--faint);padding-top:3px}
+  .g-band{margin-top:20px;font-size:13.5px;color:var(--soft)}
+  .g-band b{color:var(--ink)}
+  .stamp-row{display:flex;gap:18px;align-items:center;border-top:1px solid var(--edge-soft);padding-top:18px;flex-wrap:wrap}
+  .stamp{font-family:var(--mono);border:2px solid var(--gold);border-radius:4px;padding:8px 14px;transform:rotate(-1.4deg);
+    text-align:center;min-width:150px}
+  .stamp .t-num{font-size:11px;letter-spacing:.18em;color:var(--gold)}
+  .stamp .t-name{font-size:14.5px;font-weight:700;letter-spacing:.04em}
+  .stamp-note{flex:1;min-width:220px;font-size:13.5px;color:var(--soft)}
+  .lite{font-family:var(--mono);font-size:10.5px;color:var(--faint);margin-top:12px}
+
+  .actions{display:flex;gap:10px;margin:18px 0 6px;flex-wrap:wrap}
+  .btn{font-family:var(--mono);font-size:13px;padding:10px 16px;border-radius:5px;cursor:pointer;border:1px solid var(--gold-deep);background:var(--gold);color:#14110a;font-weight:700}
+  .btn.ghost{background:transparent;color:var(--soft);border-color:var(--edge)}
+  .btn.ghost:hover{color:var(--ink);border-color:var(--soft)}
+
+  /* ── sticky readout ── */
+  .readout{position:fixed;left:0;right:0;bottom:0;background:rgba(14,17,20,.92);backdrop-filter:blur(6px);
+    border-top:1px solid var(--edge);z-index:9}
+  .readout .wrap{display:flex;gap:22px;align-items:center;padding-top:10px;padding-bottom:10px}
+  .r-item{font-family:var(--mono);font-size:12px;color:var(--soft)}
+  .r-item b{color:var(--ink);font-size:16px;margin-left:6px}
+  .r-tier{margin-left:auto;font-family:var(--mono);font-size:12px;color:var(--gold)}
+
+  .next-p{max-width:62ch;margin-bottom:12px}
+  .next-fine{font-size:12.5px;margin-top:4px}
+  footer{margin-top:34px;border-top:1px solid var(--edge);padding:22px 0 40px;color:var(--soft);font-size:13.5px}
+  footer .privacy{font-family:var(--mono);font-size:11.5px;color:var(--faint);letter-spacing:.03em;margin-bottom:12px}
+  footer p{margin-bottom:8px;max-width:62ch}
+  @media (max-width:560px){ .seg{gap:3px} .seg button{font-size:11px;padding:6px 0} .readout .wrap{gap:14px} }
+  @media (prefers-reduced-motion: reduce){ .fill{transition:none} }
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <div class="eyebrow">Operations Protocol · The Fractional Operating Standard</div>
+    <h1>Field Scorecard</h1>
+    <p class="lede">Score <b>one engagement</b> against the Standard: six health dimensions, ten governance indicators, one verdict. Three minutes. If the number doesn't match what your gut already knew — that's worth knowing too.</p>
+  </div>
+</header>
+
+<section id="partA">
+  <div class="wrap">
+    <div class="part"><b>Part A</b> · Engagement health — the Health Composite (M1)</div>
+    <h2>Score six dimensions, 0–10</h2>
+    <p class="sub">0 means the described condition has failed entirely; 10 means it holds without exception. Weights are fixed by the Standard.</p>
+    <div id="dims"></div>
+  </div>
+</section>
+
+<section id="partB">
+  <div class="wrap">
+    <div class="part"><b>Part B</b> · The governance register — the Governance Score (M17)</div>
+    <h2>Mark every indicator active right now</h2>
+    <p class="sub">Each is an observable event, weighted by how directly it strikes at authority. Marking none scores 100.</p>
+    <div id="inds"></div>
+  </div>
+</section>
+
+<section id="verdict">
+  <div class="wrap">
+    <div class="part"><b>Verdict</b> · Read under FOS v1.0</div>
+    <h2>The instrument</h2>
+    <div class="instrument">
+      <div class="gauge">
+        <div class="g-head"><div><span class="g-name">Health Composite</span><span class="g-code">M1</span></div>
+          <div class="g-val" id="hcVal">–<small>/100</small></div></div>
+        <div class="track"><div class="fill" id="hcFill" style="width:0%"></div></div>
+        <div class="g-band" id="hcBand">Score all six dimensions to compute.</div>
+      </div>
+      <div class="gauge">
+        <div class="g-head"><div><span class="g-name">Governance Score</span><span class="g-code">M17</span></div>
+          <div class="g-val" id="gsVal">100<small>/100</small></div></div>
+        <div class="track" id="gsTrack">
+          <div class="fill" id="gsFill" style="width:100%"></div>
+          <div class="tick" style="left:45%"><span>45</span></div>
+          <div class="tick" style="left:60%"><span>60</span></div>
+          <div class="tick" style="left:80%"><span>80</span></div>
+        </div>
+        <div class="g-band" id="gsBand"><b>100 — healthy.</b> The register is quiet. The obligation is to keep scoring honestly.</div>
+      </div>
+      <div class="stamp-row">
+        <div class="stamp" id="stamp"><div class="t-num">GOVERNANCE TIER 1</div><div class="t-name">NORMAL OPERATIONS</div></div>
+        <div class="stamp-note" id="tierNote">No response required beyond honest scoring, on cadence.</div>
+      </div>
+      <div class="lite">Indicative reading. The full Standard adds posture, scope-change history, and authority-matrix triggers to tier assignment.</div>
+    </div>
+    <div class="actions">
+      <button class="btn" id="copyBtn">Copy results</button>
+      <button class="btn ghost" id="resetBtn">Reset scorecard</button>
+    </div>
+  </div>
+</section>
+
+<section id="next">
+  <div class="wrap">
+    <div class="part"><b>Next</b> · What the number is for</div>
+    <h2>One reading is a snapshot. The Standard runs on the trend.</h2>
+    <p class="sub" id="nextNote">Score again in two weeks. If it moved, you'll want the record of why.</p>
+    <p class="next-p">If you run more than one engagement, FEOS keeps this scorecard, the governance register and the renewal clock for all of them, encrypted, on your own machine. <a href="https://operationsprotocol.com">See FEOS →</a></p>
+    <p class="next-p">If the score is wrong, or right in a way that stings, tell me. Paste your copied results if you want a second read. <a href="mailto:raine@operationsprotocol.com?subject=Scorecard">raine@operationsprotocol.com</a></p>
+    <p class="sub next-fine">These are ordinary links. Following one sends nothing you entered here.</p>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="privacy">NOTHING ENTERED HERE LEAVES THIS PAGE · NO STORAGE · NO NETWORK · NO ANALYTICS</div>
+    <p>This scorecard implements the health and governance instruments of <a href="/fos-v1.0.pdf">The Fractional Operating Standard</a> (FOS v1.0) — the free, published doctrine for running a fractional practice: the full audit anchors, the four-tier response rules, the renewal clock, and the value ledger.</p>
+    <p>A full reference implementation conforming to FOS v1.0 is maintained as <a href="https://operationsprotocol.com">FEOS — the Fractional Executive Operating System</a>.</p>
+    <p style="color:var(--faint);font-size:12px;margin-top:14px">FOS v1.0 · © 2026 Raine Townsend · Free to share unmodified, with attribution.</p>
+  </div>
+</footer>
+
+<div class="readout" aria-hidden="true">
+  <div class="wrap">
+    <span class="r-item">M1<b id="rHC">–</b></span>
+    <span class="r-item">M17<b id="rGS">100</b></span>
+    <span class="r-tier" id="rTier">TIER 1 · NORMAL OPERATIONS</span>
+  </div>
+</div>
+
+<script>
+(function(){
+"use strict";
+var DIMS=[
+ {id:"scope",  name:"Scope & Authority Clarity", w:1.5, what:"Is what you own documented, agreed, and holding?"},
+ {id:"stake",  name:"Stakeholder Alignment",     w:1.4, what:"Do the people who matter agree on why you're there?"},
+ {id:"complex",name:"Operational Complexity",    w:1.2, what:"Is the environment tractable, or does chaos tax every hour?"},
+ {id:"decide", name:"Decision Velocity",         w:1.1, what:"Do decisions you need actually happen, at speed?"},
+ {id:"fin",    name:"Financial Visibility",      w:1.0, what:"Can you see the numbers your function requires?"},
+ {id:"cadence",name:"Communication Cadence",     w:1.0, what:"Does information flow on a rhythm, or on accident?"}
+];
+var INDS=[
+ {g:3,name:"Decisions bypassed",desc:"A decision inside your scope, made without your input."},
+ {g:3,name:"Communication routed around you",desc:"Operational traffic sent to your reports or counterparts without you copied."},
+ {g:3,name:"Decisions reversed",desc:"A call of yours reversed within thirty days, without consultation."},
+ {g:3,name:"Parallel solution evaluated",desc:"An alternative to your approach explored — consultant, hire, internal — without telling you."},
+ {g:2,name:"Scope undocumented",desc:"Work performed outside the SOW with no written change order."},
+ {g:2,name:"Meeting exclusions",desc:"Key operational meetings held without you — especially about your function."},
+ {g:2,name:"Budget visibility restricted",desc:"Asked to manage outcomes without seeing the inputs."},
+ {g:2,name:"Sponsor / champion changed",desc:"The executive who hired you has departed, been reassigned, or been diminished."},
+ {g:2,name:"SOW disputed",desc:"Scope, deliverables, or terms contested outside the change-order process."},
+ {g:1,name:"Sponsor response past 72 hours",desc:"A written request needing decision, unanswered past 72h, in the trailing 14 days."}
+];
+var TIERS={
+ 1:{name:"NORMAL OPERATIONS",note:"No response required beyond honest scoring, on cadence."},
+ 2:{name:"FRICTION",note:"Document and watch. The register entry you make now is the receipt you'll need later."},
+ 3:{name:"SPONSOR INTERVENTION REQUIRED",note:"The sponsor, by name, in a scheduled conversation — with the register on the table."},
+ 4:{name:"ENGAGEMENT AT RISK",note:"Pause the roadmap for a documented resolve-or-restructure conversation."}
+};
+var NEXT={
+ 1:"Score again in two weeks. If it moved, you'll want the record of why.",
+ 2:"Friction is where the record starts. Log what you marked today, with dates, while you still remember them.",
+ 3:"This is the conversation the Standard exists to force. Don't have it from memory. Have it from the register.",
+ 4:"This is the conversation the Standard exists to force. Don't have it from memory. Have it from the register."
+};
+var scores={}, active=INDS.map(function(){return false;});
+var TOTAL_W=7.2;
+
+function el(id){return document.getElementById(id);}
+function bandGS(v){ if(v>=80)return["healthy","var(--ok)"]; if(v>=60)return["caution","var(--caution)"]; if(v>=45)return["at risk","var(--risk)"]; return["severe","var(--severe)"];}
+function bandHC(v){ if(v>=80)return["strong","var(--ok)"]; if(v>=60)return["holding","var(--caution)"]; if(v>=40)return["degrading","var(--risk)"]; return["failing","var(--severe)"];}
+function gsBandText(v,b){
+  if(v>=80)return "<b>"+v+" — healthy.</b> The register is quiet. The obligation is to keep scoring honestly.";
+  if(v>=60)return "<b>"+v+" — caution.</b> Something is off pattern. Log it now; latency is the instrument's enemy.";
+  if(v>=45)return "<b>"+v+" — at risk.</b> The pattern has weight. Section 4 of the Standard names the required response.";
+  return "<b>"+v+" — severe.</b> Structural authority is failing. This is the conversation the Standard exists to force.";
+}
+function compute(){
+  var done=Object.keys(scores).length===DIMS.length, hc=null;
+  if(done){ var s=0; DIMS.forEach(function(d){ s+=scores[d.id]*d.w; }); hc=Math.round(s/(TOTAL_W*10)*100); }
+  var wy=0,x3=0,x2=0;
+  INDS.forEach(function(ind,i){ if(active[i]){ wy+=ind.g; if(ind.g===3)x3++; if(ind.g===2)x2++; } });
+  var gs=Math.round((1-wy/23)*1000)/10;
+  var tier=1;
+  if(gs<40||x3>=2)tier=4; else if(gs<60||x3>=1||x2>=2)tier=3; else if(gs<80||x2>=1)tier=2;
+  // paint
+  if(hc===null){ el("hcVal").innerHTML="–<small>/100</small>"; el("hcFill").style.width="0%";
+    el("hcBand").textContent="Score all six dimensions to compute."; el("rHC").textContent="–"; }
+  else{ var hb=bandHC(hc); el("hcVal").innerHTML=hc+"<small>/100</small>";
+    el("hcFill").style.width=hc+"%"; el("hcFill").style.backgroundColor=hb[1];
+    el("hcBand").innerHTML="<b>"+hc+" — "+hb[0]+".</b> The trend across audits is the product; a single reading is a starting point.";
+    el("rHC").textContent=hc; }
+  var gb=bandGS(gs);
+  el("gsVal").innerHTML=gs+"<small>/100</small>"; el("gsFill").style.width=Math.max(gs,0)+"%";
+  el("gsFill").style.backgroundColor=gb[1]; el("gsBand").innerHTML=gsBandText(gs,gb[0]);
+  el("rGS").textContent=gs;
+  el("stamp").firstElementChild.textContent="GOVERNANCE TIER "+tier;
+  el("stamp").lastElementChild.textContent=TIERS[tier].name;
+  el("stamp").style.borderColor = tier>=4?"var(--severe)": tier===3?"var(--risk)": tier===2?"var(--caution)":"var(--gold)";
+  el("tierNote").textContent=TIERS[tier].note;
+  el("rTier").textContent="TIER "+tier+" · "+TIERS[tier].name;
+  el("nextNote").textContent=NEXT[tier];
+  window.__state={hc:hc,gs:gs,tier:tier};
+}
+// build Part A
+var dimsBox=el("dims");
+DIMS.forEach(function(d){
+  var row=document.createElement("div"); row.className="dim";
+  row.innerHTML='<div class="dim-top"><span class="dim-name">'+d.name+'</span><span class="wchip">×'+d.w.toFixed(1)+'</span></div>'+
+    '<div class="dim-what">'+d.what+'</div>';
+  var seg=document.createElement("div"); seg.className="seg"; seg.setAttribute("role","group"); seg.setAttribute("aria-label",d.name+" score 0 to 10");
+  for(var v=0;v<=10;v++){(function(v){
+    var b=document.createElement("button"); b.type="button"; b.textContent=v; b.setAttribute("aria-pressed","false");
+    b.addEventListener("click",function(){ scores[d.id]=v;
+      Array.prototype.forEach.call(seg.children,function(c,i){ c.setAttribute("aria-pressed", i===v ? "true":"false"); });
+      compute(); });
+    seg.appendChild(b);
+  })(v);}
+  row.appendChild(seg); dimsBox.appendChild(row);
+});
+// build Part B
+var indsBox=el("inds"), groups={3:"Structural Authority",2:"Visibility & Contract",1:"Friction"},
+    gdesc={3:"The events that are the erosion.",2:"The conditions that let erosion happen unrecorded.",1:"The canary."};
+[3,2,1].forEach(function(g){
+  var h=document.createElement("div"); h.className="grp x"+g;
+  h.innerHTML='<h3>'+groups[g]+'</h3><span class="wchip">weight ×'+g+'</span><p>'+gdesc[g]+'</p>';
+  indsBox.appendChild(h);
+  INDS.forEach(function(ind,i){ if(ind.g!==g)return;
+    var b=document.createElement("button"); b.type="button"; b.className="ind"; b.setAttribute("aria-pressed","false");
+    b.innerHTML='<span class="box" aria-hidden="true"></span><span><span class="ind-name">'+ind.name+'</span><div class="ind-desc">'+ind.desc+'</div></span>';
+    b.addEventListener("click",function(){ active[i]=!active[i]; b.setAttribute("aria-pressed",active[i]?"true":"false"); compute(); });
+    indsBox.appendChild(b);
+  });
+});
+// actions
+el("copyBtn").addEventListener("click",function(){
+  var s=window.__state||{}, names=INDS.filter(function(_,i){return active[i];}).map(function(x){return x.name;});
+  var txt="FOS FIELD SCORECARD — "+new Date().toISOString().slice(0,10)+"\n"+
+    "Health Composite (M1): "+(s.hc==null?"not fully scored":s.hc+"/100")+"\n"+
+    "Governance Score (M17): "+s.gs+"/100\n"+
+    "Governance tier (indicative): Tier "+s.tier+" — "+TIERS[s.tier].name+"\n"+
+    "Active indicators: "+(names.length?names.join("; "):"none")+"\n"+
+    "Scored under The Fractional Operating Standard v1.0 — fractionaloperatingstandard.com";
+  (navigator.clipboard&&navigator.clipboard.writeText?navigator.clipboard.writeText(txt):Promise.reject()).then(function(){
+    el("copyBtn").textContent="Copied"; setTimeout(function(){el("copyBtn").textContent="Copy results";},1600);
+  }).catch(function(){ window.prompt("Copy your results:",txt); });
+});
+el("resetBtn").addEventListener("click",function(){
+  scores={}; active=INDS.map(function(){return false;});
+  document.querySelectorAll('.seg button,[class="ind"],button.ind').forEach(function(b){b.setAttribute("aria-pressed","false");});
+  compute(); window.scrollTo({top:0});
+});
+compute();
+})();
+</script>
+</body>
+</html>
