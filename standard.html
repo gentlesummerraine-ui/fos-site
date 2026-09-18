@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Fractional Operating Standard · v1.0</title>
+<meta name="description" content="FOS v1.0 — operating doctrine for solo fractional executives. Authority erosion is measurable before it is sayable. Free to read and share, unmodified, with attribution.">
+<style>
+  :root{
+    --bg:#0e1114; --panel:#151a1f; --panel-2:#11151a; --edge:#262d35; --edge-soft:#1d232a;
+    --ink:#e9e4d8; --soft:#98a0a8; --faint:#6b7280;
+    --gold:#d2a12a; --gold-deep:#a97b12; --gold-dim:#8a6a1f;
+    --ok:#5f9e72; --caution:#d2a12a; --risk:#cf7a33; --severe:#c65550;
+    --serif:"Iowan Old Style",Charter,"Source Serif Pro",Georgia,serif;
+    --mono:"SF Mono","Cascadia Code",Menlo,Consolas,monospace;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
+  body{background:var(--bg);color:var(--ink);font-family:var(--serif);font-size:16px;line-height:1.6}
+  .wrap{max-width:720px;margin:0 auto;padding:0 20px}
+  a{color:var(--gold);text-decoration:none;border-bottom:1px solid var(--gold-dim)}
+  a:hover{border-bottom-color:var(--gold)}
+  :focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+
+  header{padding:44px 0 26px;border-bottom:1px solid var(--edge)}
+  .eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.22em;color:var(--gold);text-transform:uppercase}
+  h1{font-size:clamp(28px,6.4vw,42px);line-height:1.1;font-weight:700;margin:12px 0 14px;letter-spacing:-.01em}
+  .byline{font-family:var(--mono);font-size:12px;color:var(--soft);letter-spacing:.04em;margin-bottom:18px}
+  .lede{color:var(--soft);font-size:16.5px;max-width:58ch}
+  .lede b{color:var(--ink);font-weight:600}
+  .status{margin-top:18px;font-size:13.5px;color:var(--faint);border-left:2px solid var(--edge);padding-left:12px;max-width:60ch}
+
+  nav.toc{padding:22px 0 4px;border-bottom:1px solid var(--edge-soft)}
+  nav.toc ol{list-style:none;counter-reset:s;display:grid;gap:5px}
+  nav.toc li{counter-increment:s;font-size:14.5px}
+  nav.toc li a{border-bottom:none;color:var(--ink)}
+  nav.toc li a:hover{color:var(--gold)}
+  nav.toc li::before{content:counter(s) " · ";font-family:var(--mono);font-size:12px;color:var(--gold)}
+
+  section{padding:34px 0 6px;scroll-margin-top:12px}
+  .part{font-family:var(--mono);font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--soft);margin-bottom:6px}
+  .part b{color:var(--gold);font-weight:600}
+  h2{font-size:23px;line-height:1.25;margin:2px 0 14px;letter-spacing:-.005em}
+  h3{font-size:16.5px;margin:24px 0 8px}
+  p{margin-bottom:14px;max-width:64ch}
+  ul,ol.plain{margin:0 0 16px 0;padding-left:18px;max-width:64ch}
+  li{margin-bottom:8px}
+  b,strong{font-weight:600}
+  em{font-style:italic;color:var(--ink)}
+
+  .thesis{background:var(--panel);border:1px solid var(--edge);border-left:3px solid var(--gold);
+    border-radius:8px;padding:18px 20px;margin:20px 0;font-size:18px;line-height:1.45;max-width:60ch}
+  .formula{font-family:var(--mono);font-size:13.5px;color:var(--ink);background:var(--panel-2);
+    border:1px solid var(--edge-soft);border-radius:6px;padding:12px 14px;margin:14px 0;overflow-x:auto;white-space:nowrap}
+  .note{color:var(--soft);font-size:14px;max-width:62ch}
+
+  .tbl{width:100%;border-collapse:collapse;margin:14px 0 18px;font-size:14.5px;display:block;overflow-x:auto}
+  .tbl th{text-align:left;font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--soft);font-weight:400;padding:0 14px 8px 0;border-bottom:1px solid var(--edge)}
+  .tbl td{padding:10px 14px 10px 0;border-bottom:1px solid var(--edge-soft);vertical-align:top}
+  .tbl td:first-child{font-weight:600;white-space:nowrap}
+  .w{font-family:var(--mono);font-size:12px;color:var(--gold);white-space:nowrap}
+
+  .grp{margin:26px 0 10px;display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+  .grp h3{margin:0;font-size:15.5px}
+  .wchip{font-family:var(--mono);font-size:11px;color:var(--ink);border:1px solid var(--edge);border-radius:3px;padding:1px 6px}
+  .grp.x3 .wchip{color:var(--severe);border-color:#5c3230}
+  .grp.x2 .wchip{color:var(--risk);border-color:#5a4026}
+  .grp p{color:var(--soft);font-size:13px;margin:0}
+  ol.ind{list-style:none;padding:0;counter-reset:none}
+  ol.ind li{background:var(--panel);border:1px solid var(--edge-soft);border-radius:8px;padding:12px 14px;margin-bottom:8px}
+  ol.ind .n{font-family:var(--mono);font-size:12px;color:var(--gold);margin-right:8px}
+  ol.ind b{font-size:15.5px}
+  ol.ind span.d{display:block;color:var(--soft);font-size:13.5px;line-height:1.45;margin-top:3px}
+
+  .tier{background:var(--panel);border:1px solid var(--edge-soft);border-radius:8px;padding:14px 16px;margin-bottom:10px}
+  .tier.t4{border-left:3px solid var(--severe)}
+  .tier.t3{border-left:3px solid var(--risk)}
+  .tier.t2{border-left:3px solid var(--caution)}
+  .tier.t1{border-left:3px solid var(--ok)}
+  .tier b{font-size:15.5px}
+  .tier p{color:var(--soft);font-size:14px;margin:4px 0 0;max-width:60ch}
+
+  .bands{font-family:var(--mono);font-size:13px;color:var(--soft);background:var(--panel-2);
+    border:1px solid var(--edge-soft);border-radius:6px;padding:12px 14px;margin:12px 0}
+
+  footer{margin-top:44px;border-top:1px solid var(--edge);padding:26px 0 60px;color:var(--soft);font-size:14px}
+  footer p{max-width:62ch}
+  .tools{background:var(--panel);border:1px solid var(--edge);border-radius:8px;padding:16px 18px;margin:22px 0 18px}
+  .tools p{margin-bottom:8px}
+  .tools p:last-child{margin-bottom:0}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <div class="eyebrow">FOS · Version 1.0</div>
+    <h1>The Fractional Operating Standard</h1>
+    <div class="byline">Raine Townsend · Founder, Operations Protocol · 2026</div>
+    <p class="lede">Fractional engagements don't end when the work gets bad. They end when <b>authority erodes</b> — quietly, structurally, and measurably — months before anyone says the word "transition." The Fractional Operating Standard exists to make that erosion visible while it can still be reversed, and to run the practice that catches it as a system instead of a feeling.</p>
+    <p class="status"><b>Status of this document.</b> FOS v1.0 is free to read and to share in unmodified form, with attribution. The Standard is not for sale; it is for use. © 2026 Raine Townsend. No derivative versions — the Standard stays canonical. <a href="fos-v1.0.pdf">Download the PDF</a> · <a href="index.html">Score an engagement</a></p>
+  </div>
+</header>
+
+<nav class="toc">
+  <div class="wrap">
+    <ol>
+      <li><a href="#s1">The failure model: authority erodes before revenue does</a></li>
+      <li><a href="#s2">The canonical inputs: what a practice must record</a></li>
+      <li><a href="#s3">Engagement health: the M1 composite</a></li>
+      <li><a href="#s4">The Governance Shield: ten indicators, one score, four tiers</a></li>
+      <li><a href="#s5">The renewal decision: windows, triggers, vocabulary</a></li>
+      <li><a href="#s6">Operational Alpha: prove it in their numbers</a></li>
+      <li><a href="#s7">Running the Standard: cadence, tiers, and the practice layer</a></li>
+      <li><a href="#s8">Implementation</a></li>
+    </ol>
+  </div>
+</nav>
+
+<section id="what">
+  <div class="wrap">
+    <div class="part"><b>Preface</b></div>
+    <h2>What this Standard is — and is not</h2>
+    <p>The Fractional Operating Standard is an operating doctrine for solo fractional executives — COOs, CFOs, CROs, CTOs, CMOs running multiple concurrent engagements under retainer. It defines what a fractional practice must record, what it must compute from those records, and what decisions those computations must trigger.</p>
+    <p>It is not an academic study, and it does not pretend to be one. It is codified operating doctrine: the failure patterns are the ones practitioners recognize on sight, and every metric in this document is implemented, end to end, in a working reference system. Nothing here is aspirational. If the Standard says a number is computable from the inputs, it is computed from the inputs.</p>
+    <p>Nor was it written from inside a single fractional practice. It was engineered from outside the seat — deliberately. Practitioners meet this failure pattern one career at a time; an instrument requires the pattern isolated from any one career, weighted by structure rather than by memory, and proven by implementation before publication. That is the vantage this document is written from.</p>
+    <p>It is also not a course. The Standard assumes you already know how to do the work of your function. What it systematizes is the part almost nobody systematizes: the engagement around the work — scope, authority, evidence, economics, and the renewal decision.</p>
+    <h3>Three commitments run through everything that follows</h3>
+    <ul>
+      <li><b>Record decisions, not vibes.</b> Every input in the Standard is something that happened — a score you assigned with written evidence, an indicator you marked with a date, a dollar figure you can defend.</li>
+      <li><b>Compute health; don't intuit it.</b> Composite numbers exist so that drift is visible before it is dramatic. A practitioner's gut catches erosion at month five. The instruments catch it at week three.</li>
+      <li><b>Let thresholds force conversations.</b> The Standard's tiers and windows exist to convert an awkward, avoidable conversation into a scheduled, structural one.</li>
+    </ul>
+    <p class="note">A note on notation: every metric in the Standard carries an index code — M1 through M18 — in its reference registry. Prose in this document uses the metrics' names; the codes appear in formulas and tables, where precision earns them.</p>
+  </div>
+</section>
+
+<section id="s1">
+  <div class="wrap">
+    <div class="part"><b>1</b> · The failure model</div>
+    <h2>Authority erodes before revenue does</h2>
+    <p>Ask a fractional executive why an engagement ended and you will usually hear a proximate cause — budget, reorganization, "they brought it in-house." Ask what the six months before that looked like and a different story emerges, and it is almost always the same story.</p>
+    <p>The engagement didn't die at the renewal conversation. It died in increments: a decision made inside the FE's scope without the FE in the room. Operational email routed around them. A reversal, delivered casually, of a call they'd made three weeks earlier. A meeting about their function that they learned about afterward. None of these is a crisis. Each is deniable. Together they form a pattern with a direction, and the direction is out.</p>
+    <p>The Standard names this pattern <b>authority erosion</b>, and rests on one operating thesis:</p>
+    <div class="thesis">Authority erosion precedes revenue loss, and erosion is measurable before it is sayable.</div>
+    <p><em>Measurable</em> — because each erosion event is a discrete, observable fact. <em>Before it is sayable</em> — because no single event justifies raising the alarm, which is exactly why practitioners raise it late or never.</p>
+
+    <h3>The authority posture ladder</h3>
+    <p>Engagement authority is not binary. The Standard describes it as a four-position ladder, and requires the position to be recorded, with dates, as it changes:</p>
+    <table class="tbl">
+      <tr><td>Observer</td><td>You attend, you read, you are briefed. No decision routes through you.</td></tr>
+      <tr><td>Advisor</td><td>Your judgment is sought before decisions; the decisions remain elsewhere.</td></tr>
+      <tr><td>Operator</td><td>Designated decisions are yours. You hold the pen inside a documented scope.</td></tr>
+      <tr><td>Leader</td><td>You own outcomes, direct people, and are accountable for the function's results.</td></tr>
+    </table>
+    <p>Two rules attach to the ladder. First: <b>integration has a clock.</b> An engagement still sitting at Observer past day fourteen is not ramping — it is stalling, and the Standard treats it as an early governance signal, not a scheduling artifact. Second: <b>direction matters more than position.</b> An Operator sliding toward Advisor is a louder alarm than an Advisor who was hired to advise.</p>
+
+    <h3>Named failure modes</h3>
+    <p>The Standard tracks a small set of named, practice-level failure modes because naming them makes them checkable:</p>
+    <ul>
+      <li><b>Single-Client Dependency</b> — one engagement exceeds 40% of practice revenue. The practice has an employer, not a portfolio, and every negotiation with that client happens under duress.</li>
+      <li><b>Scope Drift</b> — work accumulates outside the documented scope faster than change orders document it. Drift is unpaid work today and a renewal-time dispute later.</li>
+      <li><b>Silent Erosion</b> — the pattern of this section, running unmeasured.</li>
+    </ul>
+    <p>Everything in the sections that follow exists to make these three impossible to miss.</p>
+  </div>
+</section>
+
+<section id="s2">
+  <div class="wrap">
+    <div class="part"><b>2</b> · The canonical inputs</div>
+    <h2>What a practice must record</h2>
+    <p>The Standard defines a fixed registry of eighteen canonical inputs — the complete set of facts a fractional practice records, from which every metric in this document is derived. The registry is deliberately closed and deliberately small: if a number matters, it is computed from these; if it cannot be computed from these, the Standard does not claim it.</p>
+
+    <h3>Practice-level inputs — recorded once, about you</h3>
+    <ul>
+      <li><b>Hour ceiling</b> — the total monthly hours the practice can sell. Not a goal; a constraint.</li>
+      <li><b>Administrative reserve</b> — hours held back for running the practice itself. Capacity math that ignores admin is fiction.</li>
+      <li><b>Expense ratio</b> — the percentage of gross that operating the practice consumes.</li>
+      <li><b>Target client count</b> — the portfolio size the practice is built for.</li>
+    </ul>
+
+    <h3>Engagement-level inputs — recorded per client, at the moments they become true</h3>
+    <ul>
+      <li><b>Qualification decision</b> — proceed, proceed-with-conditions, or decline, recorded before the SOW exists.</li>
+      <li><b>Engagement tier</b> — the contracted intensity of the engagement (Section 7 defines the three tiers and their load multipliers).</li>
+      <li><b>Retainer</b> — the monthly number, exactly as contracted.</li>
+      <li><b>Committed hours</b> — the monthly hours the retainer buys.</li>
+      <li><b>Start and end dates</b> — because every engagement has an end date, and the renewal clock (Section 5) runs from it.</li>
+      <li><b>Audit scores</b> — the six-dimension health assessment of Section 3, scored at baseline, month three, and month six, each score carrying written evidence.</li>
+      <li><b>Scope change register</b> — every approved change order, dated. The trailing count is itself a governance signal.</li>
+      <li><b>Governance indicator states</b> — the ten-indicator register of Section 4, the Standard's core instrument.</li>
+      <li><b>Value ledger entries</b> — every quantified item of delivered value, with its implementation friction, per Section 6.</li>
+      <li><b>Renewal records</b> — every renewal decision and its outcome, in the closed vocabulary of Section 5.</li>
+      <li><b>Stakeholder map</b> — who holds influence, who holds disposition, and who your champion actually is.</li>
+      <li><b>Authority posture</b> — the ladder position of Section 1, with transition dates.</li>
+    </ul>
+    <p>Two registry conventions are part of the doctrine. Inputs are numbered and versioned in the reference registry: one slot is currently reserved for future assignment, and one has been formally retired and superseded (the legacy renewal-outcome field, replaced by the renewal records above). A registry that can retire an input without renumbering the rest is a registry that can survive contact with reality.</p>
+    <div class="thesis">If a fact about an engagement is going to matter at renewal, it must live in a canonical input the day it happens — not in your memory, and not in your inbox.</div>
+  </div>
+</section>
+
+<section id="s3">
+  <div class="wrap">
+    <div class="part"><b>3</b> · Engagement health</div>
+    <h2>The M1 composite</h2>
+    <p>Every engagement in a Standard-run practice carries one number that answers "how is this engagement, structurally?" That number is the <b>Health Composite (M1)</b>, scored 0–100, and it is an audit result — not a mood.</p>
+
+    <h3>The six dimensions</h3>
+    <p>The composite is computed from six dimensions, each scored 0–10 against written anchors, each score accompanied by recorded evidence. The weights are fixed by the Standard:</p>
+    <table class="tbl">
+      <tr><th>Dimension</th><th>Weight</th><th>What it measures</th></tr>
+      <tr><td>Scope &amp; Authority Clarity</td><td class="w">× 1.5</td><td>Is what you own documented, agreed, and holding?</td></tr>
+      <tr><td>Stakeholder Alignment</td><td class="w">× 1.4</td><td>Do the people who matter agree on why you're there?</td></tr>
+      <tr><td>Operational Complexity</td><td class="w">× 1.2</td><td>Is the environment tractable, or does chaos tax every hour?</td></tr>
+      <tr><td>Decision Velocity</td><td class="w">× 1.1</td><td>Do decisions you need actually happen, at speed?</td></tr>
+      <tr><td>Financial Visibility</td><td class="w">× 1.0</td><td>Can you see the numbers your function requires?</td></tr>
+      <tr><td>Communication Cadence</td><td class="w">× 1.0</td><td>Does information flow on a rhythm, or on accident?</td></tr>
+    </table>
+    <div class="formula">M1 = Σ(dimension score × weight) ÷ 7.2 ÷ 10 × 100</div>
+    <p class="note">A weighted composite normalized to 0–100.</p>
+
+    <h3>Why Scope &amp; Authority carries 1.5×</h3>
+    <p>The heaviest weight in the model is an argument, and it is the Standard's central one. Stakeholders can be re-aligned. Complexity can be managed down. Cadence can be rebuilt in a month. But an engagement where scope and authority have gone soft is an engagement where every other dimension is now negotiable — where "what you own" is decided ad hoc, meeting by meeting, by whoever is in the room. Scope &amp; Authority Clarity is weighted 1.5× because it is the dimension the other five depend on, and because its decay is the earliest reliable predictor of the failure pattern in Section 1.</p>
+
+    <h3>Cadence and evidence</h3>
+    <p>The audit runs at baseline, month three, and month six — often enough to produce a trend, spaced enough that movement means something. Two disciplines make the number trustworthy:</p>
+    <ul>
+      <li><b>Anchored scoring.</b> Each dimension defines what a 2, a 5, and an 8 look like. You are matching observed conditions to described states, not expressing satisfaction.</li>
+      <li><b>Evidence or it didn't happen.</b> Every score carries written observations. A score you can't evidence is a score you'll quietly inflate — and the audit exists precisely for the quarters when you'd rather not know.</li>
+    </ul>
+    <p>The trend is the product. A 71 means little alone; 84 → 76 → 71 across three audits, with the Scope &amp; Authority row driving the slide, is Section 1 happening on schedule — and Section 4 exists to catch it between audits.</p>
+  </div>
+</section>
+
+<section id="s4">
+  <div class="wrap">
+    <div class="part"><b>4</b> · The Governance Shield</div>
+    <h2>Ten indicators, one score, four tiers</h2>
+    <p>The audit of Section 3 runs at fixed marks. Erosion runs weekly. The Governance Shield is the continuous instrument between audits: ten binary indicators, each an observable event, each weighted by how directly it strikes at authority.</p>
+
+    <div class="grp x3"><h3>Structural Authority</h3><span class="wchip">× 3</span><p>The events that are the erosion</p></div>
+    <ol class="ind">
+      <li><span class="n">1</span><b>Decisions Bypassed</b><span class="d">A decision inside your scope, made without your input. You were hired to provide judgment; decisions made without it defeat the engagement's purpose.</span></li>
+      <li><span class="n">2</span><b>Communication Routed Around You</b><span class="d">Operational traffic directed to your reports or scope counterparts without you copied. You cannot operate on information you don't have.</span></li>
+      <li><span class="n">3</span><b>Decisions Reversed</b><span class="d">A call of yours reversed within thirty days, without consultation. Public reversals damage standing; standing is the asset.</span></li>
+      <li><span class="n">4</span><b>Parallel Solution Evaluated</b><span class="d">Leadership evaluating an alternative to your approach — another consultant, a full-time hire, an internal option — without telling you. Sponsor confidence has already moved.</span></li>
+    </ol>
+
+    <div class="grp x2"><h3>Visibility &amp; Contract</h3><span class="wchip">× 2</span><p>The conditions that let erosion happen unrecorded</p></div>
+    <ol class="ind">
+      <li><span class="n">5</span><b>Scope Undocumented</b><span class="d">Work performed outside the SOW without a written change order. Creep without an audit trail is a renewal dispute on layaway.</span></li>
+      <li><span class="n">6</span><b>Meeting Exclusions</b><span class="d">Key operational meetings held without you, especially when your function is on the agenda.</span></li>
+      <li><span class="n">7</span><b>Budget Visibility Restricted</b><span class="d">You are asked to manage outcomes without seeing the inputs: a COO without OpEx access, a CFO without the revenue forecast.</span></li>
+      <li><span class="n">8</span><b>Sponsor / Champion Changed</b><span class="d">The executive who hired you has departed, been reassigned, or been diminished. The conditions your SOW was signed under may no longer exist.</span></li>
+      <li><span class="n">9</span><b>SOW Disputed</b><span class="d">Scope, deliverables, or terms contested outside the change-order process. The contractual floor is moving.</span></li>
+    </ol>
+
+    <div class="grp"><h3>Friction</h3><span class="wchip">× 1</span><p>The canary</p></div>
+    <ol class="ind">
+      <li><span class="n">10</span><b>Sponsor Response Past 72 Hours</b><span class="d">A written request requiring decision, unanswered past seventy-two hours, within the trailing fourteen days. Decision velocity is broken at the top.</span></li>
+    </ol>
+
+    <h3>The M17 score</h3>
+    <p>The register produces the <b>Governance Score (M17)</b> — the early-warning number:</p>
+    <div class="formula">M17 = (1 − weighted "yes" ÷ 23) × 100</div>
+    <p>Twenty-three is the register's total weight — four ×3 indicators, five ×2, one ×1. All clear scores 100; every active indicator pulls the score down in proportion to how structural it is.</p>
+    <div class="bands">80 and above · healthy　|　60–79 · caution　|　45–59 · at risk　|　below 45 · severe</div>
+    <p>The weighting is itself doctrine: a missed reply (×1) is friction; a restricted budget view (×2) is a condition; a bypassed decision (×3) is the disease. A single structural event outweighs the canary threefold because that is how it works in the field.</p>
+
+    <h3>The four governance tiers</h3>
+    <p>The Governance Score is a reading. The tiers are the required response, evaluated from the top down:</p>
+    <div class="tier t4"><b>Tier 4 — Engagement at Risk</b><p>Triggered by a Governance Score below 40, two or more Structural Authority indicators active, a sponsor change compounding any structural indicator — or a single confirmed violation of your documented sole or lead decision authority. That last trigger is absolute by design: a breach of agreed structure is not a data point to weigh; it is the structure failing. Tier 4 arms the crisis gate: the engagement's roadmap pauses for a documented resolve-or-restructure conversation.</p></div>
+    <div class="tier t3"><b>Tier 3 — Sponsor Intervention Required</b><p>A Governance Score below 60, any structural indicator active, or two Visibility &amp; Contract indicators active. The pattern now requires the sponsor, by name, in a scheduled conversation with the register on the table.</p></div>
+    <div class="tier t2"><b>Tier 2 — Friction</b><p>A Governance Score below 80, any ×2 indicator active, more than two approved scope changes inside thirty days, or an engagement still at Observer past day fourteen. Nothing is on fire; something is off pattern. Tier 2's obligation is documentation and watch — the register entry you make now is the receipt you'll need later.</p></div>
+    <div class="tier t1"><b>Tier 1 — Normal Operations</b><p>The register is quiet. The obligation is to keep scoring honestly.</p></div>
+    <p>Tier assignment is computed, and the practitioner may override it — with a written rationale, and with both the computed and declared tiers journaled. The override exists because judgment outranks arithmetic; the journal exists because judgment must leave a trail.</p>
+  </div>
+</section>
+
+<section id="s5">
+  <div class="wrap">
+    <div class="part"><b>5</b> · The renewal decision</div>
+    <h2>Windows, triggers, vocabulary</h2>
+    <p>Renewals are lost in the last ninety days and blamed on the last meeting. The Standard's position: <b>the renewal is a process with a clock, not an event with a mood.</b></p>
+    <p><b>The clock.</b> Every engagement records its end date at signing, and a renewal trigger — a number of days before that end date at which the renewal process formally opens, whether or not anyone feels like opening it. When the window opens, the Standard expects three artifacts on the table: the Health Composite trend (Section 3), the current governance register and tier (Section 4), and the value ledger (Section 6). The renewal conversation is those three artifacts, narrated.</p>
+    <p><b>The vocabulary.</b> Every renewal closes in exactly one of five recorded outcomes:</p>
+    <table class="tbl">
+      <tr><td>Extended</td><td>Same structure, new term.</td></tr>
+      <tr><td>Renegotiated</td><td>New structure — scope, tier, or rate — new term.</td></tr>
+      <tr><td>Transitioned</td><td>A planned, orderly handoff. Not a loss; frequently the correct outcome, executed well.</td></tr>
+      <tr><td>Wind-down</td><td>A managed conclusion without succession.</td></tr>
+      <tr><td>Lost</td><td>Unplanned, unmanaged, or contested. The outcome the whole Standard exists to make rare.</td></tr>
+    </table>
+    <p>The vocabulary is closed on purpose. "It's complicated" is not an outcome, and a practice that cannot classify its endings cannot compute its renewal rate (M15) — extended and renegotiated, over everything decided, trailing six months. That number is the practice's single most honest performance figure, and it is only as honest as the vocabulary is strict.</p>
+    <div class="thesis">A renewal conversation that begins at the trigger, with the three artifacts current, is a business review. The same conversation begun at T-minus-three-weeks, from memory, is a plea.</div>
+  </div>
+</section>
+
+<section id="s6">
+  <div class="wrap">
+    <div class="part"><b>6</b> · Operational Alpha</div>
+    <h2>Prove it in their numbers</h2>
+    <p>Every fractional executive believes they generate more value than they cost. The Standard requires the belief to be a ledger.</p>
+    <p><b>The value ledger.</b> Each entry records a delivered, quantified item of value — a cost eliminated, a margin recovered, a contract saved, a process whose cycle time you can price — together with its <b>implementation friction</b>: the real cost the client bore to realize it. Value claimed gross is marketing; value net of friction is evidence.</p>
+    <p><b>Net Alpha (M6).</b> For any engagement:</p>
+    <div class="formula">M6 = Σ(entry value) − Σ(entry friction) − cost basis　　cost basis = retainer × months engaged</div>
+    <p>Net Alpha is the number that answers the only question the renewal actually turns on: net of everything, what has this engagement returned above what it cost? When it is strongly positive, the renewal conversation is arithmetic. When it isn't, better to be the one who says so first, with the ledger open.</p>
+    <p><b>The ROI Bank (M7).</b> The sum of Net Alpha across active engagements — the practice's cumulative, defensible, net delivered value. It is the number behind every rate increase you will ever propose.</p>
+    <p><b>The discipline.</b> Ledger entries are recorded when the value lands, not reconstructed the week before renewal. Reconstructed value reads as reconstructed value; a ledger with dates reads as an operating record. And the friction column is not optional — including the client's cost to implement is precisely what makes the rest of the ledger believable.</p>
+  </div>
+</section>
+
+<section id="s7">
+  <div class="wrap">
+    <div class="part"><b>7</b> · Running the Standard</div>
+    <h2>Cadence, tiers, and the practice layer</h2>
+    <p>A standard you consult quarterly is a bookmark. FOS is run on a rhythm.</p>
+    <table class="tbl">
+      <tr><td>Weekly</td><td><b>The brief.</b> One client-facing brief per engagement per week: what moved, what's blocked, what you need, with the current health snapshot. One rule elevates it from status mail to instrument: <b>the snapshot freezes when the brief is sent.</b> What you reported is preserved as reported — next week's numbers cannot quietly rewrite last week's story. A year of frozen briefs is an engagement's flight recorder, and at renewal it is unanswerable.</td></tr>
+      <tr><td>Continuous</td><td><b>The register.</b> Governance indicators (Section 4) are marked as events occur, not batched at month-end. The instrument's value is its latency.</td></tr>
+      <tr><td>At the marks</td><td><b>The audit.</b> The six-dimension audit at baseline, month three, month six (Section 3). Trend over level.</td></tr>
+      <tr><td>Quarterly</td><td><b>The business review.</b> The Health Composite trend, the tier history, the ledger, and the roadmap, assembled for the sponsor. The QBR is the renewal conversation rehearsed three times before it counts.</td></tr>
+    </table>
+
+    <h3>Engagement tiers</h3>
+    <p>The Standard contracts engagements at one of three intensity tiers, each with a cognitive-load multiplier the capacity math consumes:</p>
+    <table class="tbl">
+      <tr><td>T1 · Advisory</td><td class="w">× 1.0</td><td>Direction, review, senior counsel; execution stays internal.</td></tr>
+      <tr><td>T2 · Active Leadership</td><td class="w">× 2.0</td><td>Line ownership of designated functions, KPI accountability inside the contracted scope.</td></tr>
+      <tr><td>T3 · Transformation</td><td class="w">× 3.5</td><td>Full operational command through a defined change mandate.</td></tr>
+    </table>
+    <p class="note">Distinct from the governance tiers of Section 4 — one prices the engagement, the other polices it.</p>
+
+    <h3>The practice layer</h3>
+    <p>Four numbers make the portfolio legible:</p>
+    <div class="formula">Load (M11) = Σ(engaged hours × tier multiplier)</div>
+    <div class="formula">Utilization (M12) = M11 ÷ (hour ceiling − admin reserve) × 100</div>
+    <div class="bands">under 75% · healthy headroom　|　75–89% · approaching ceiling　|　90%+ · no new engagements　|　above 100% · you are already paying for it</div>
+    <div class="formula">Concentration (M10) = largest retainer ÷ total retainers × 100</div>
+    <p class="note">Above 40% is the Single-Client Dependency failure mode, named in Section 1.</p>
+    <div class="formula">Practice Score (M18) = (avg M1 × 0.35) + ((100 − M10) × 0.25) + (min(M12,100) × 0.25) + (avg M17 × 0.15)</div>
+    <p>M18's weights are an argument in miniature: engagement health carries the most because it is the product; concentration and capacity carry equal weight because either can kill a healthy book; governance is the leading edge that moves first.</p>
+  </div>
+</section>
+
+<section id="s8">
+  <div class="wrap">
+    <div class="part"><b>8</b> · Implementation</div>
+    <h2>The Standard is doctrine, not software</h2>
+    <p>Everything in this Standard can be run from a spreadsheet and a calendar. The registry of Section 2 is columns; the audit of Section 3 is a scoring tab and the discipline to write evidence; the register of Section 4 is ten rows, a date column, and the arithmetic of M17; the ledger of Section 6 is entries with a friction column. The Standard is doctrine, not software, and a practitioner who runs it manually is running it fully.</p>
+    <div class="tools">
+      <p>A full reference implementation conforming to FOS v1.0 is maintained as <b>FEOS — the Fractional Executive Operating System</b>: the eighteen canonical inputs, every metric, threshold, and tier rule in this document, the frozen-brief mechanism, the governance register, and the renewal workflow, implemented end to end in a single encrypted local file that keeps engagement records on the practitioner's machine and nowhere else.</p>
+      <p>Conformance is verifiable by construction: any figure this document defines can be reproduced from the implementation's stored inputs.</p>
+    </div>
+  </div>
+</section>
+
+<section id="note">
+  <div class="wrap">
+    <div class="part"><b>Author's note</b></div>
+    <h2>Engineered, not remembered</h2>
+    <p>This Standard was engineered, not remembered. It began as a design problem: a failure pattern every practitioner recognizes and almost none can measure — authority leaving an engagement in increments too small to name. Solving it required the designer's discipline rather than the memoirist's: isolate the pattern from any single practice, weight its signals by structure instead of by anecdote, and refuse to publish until every number runs end to end in a working system. That is the test this document was held to. Nothing in it is aspirational; if the Standard says a number is computable, the reference implementation computes it.</p>
+    <p>The doctrine is free because a standard that hides is just a manual. Its authority rests on the only credential that survives contact with a skeptical operator: it is checkable. Score one engagement against the ten indicators. If the Governance Score doesn't match what your gut already knew, I want to hear about it.</p>
+    <p>— Raine Townsend</p>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <p><a href="index.html">Score an engagement against the Standard</a> — free, three minutes, nothing you enter leaves the page. Or <a href="fos-v1.0.pdf">download this document as a PDF</a>.</p>
+    <p style="margin-top:14px;color:var(--faint);font-size:13px">The Fractional Operating Standard v1.0 · © 2026 Raine Townsend · Free to share unmodified, with attribution · The reference implementation is FEOS by Operations Protocol.</p>
+  </div>
+</footer>
+
+</body>
+</html>
